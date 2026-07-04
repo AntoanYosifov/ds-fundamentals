@@ -120,6 +120,11 @@ public class ArrayList<E> implements List<E> {
         };
     }
 
+    @Override
+    public E[] toArray() {
+        return (E[]) Arrays.copyOf(this.elements, this.elements.length);
+    }
+
     private void grow() {
         this.capacity *= 2;
         Object[] tmp = new Object[this.capacity];

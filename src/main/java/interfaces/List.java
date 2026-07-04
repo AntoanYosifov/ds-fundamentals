@@ -18,4 +18,6 @@ public interface List<E> extends Iterable<E> {
     boolean contains(E element);
 
     boolean isEmpty();
+
+    E[] toArray();
 }

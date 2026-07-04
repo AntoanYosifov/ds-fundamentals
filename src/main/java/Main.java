@@ -1,23 +1,12 @@
-import implementations.ArrayList;
-import interfaces.List;
+import implementations.Stack;
 
 public class Main {
     public static void main(String[] args) {
-        List<String> names = new ArrayList<>();
 
-        names.add("one");
-        names.add("2");
-        names.add("3");
-        names.add("4");
-
-        names.add(2, "something");
-
-        System.out.println(names.get(0));
-        System.out.println(names.get(1));
-        System.out.println(names.get(2));
-        System.out.println(names.get(3));
-        System.out.println(names.get(4));
-
-
+        Stack<String> stringStack = new Stack<>();
+        System.out.println();
+        stringStack.push("1");
+        System.out.println();
+        stringStack.push("2");
     }
 }
