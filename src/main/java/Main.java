@@ -1,3 +1,4 @@
+import implementations.ArrayList;
 import implementations.Stack;
 
 public class Main {
@@ -8,5 +9,6 @@ public class Main {
         stringStack.push("1");
         System.out.println();
         stringStack.push("2");
+
     }
 }
