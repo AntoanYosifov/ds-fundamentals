@@ -1,17 +1,12 @@
-import implementations.ArrayList;
-import implementations.SinglyLinkedList;
-import implementations.Stack;
+import implementations.Queue;
 
 public class Main {
     public static void main(String[] args) {
+        Queue<Integer> queue = new Queue<>();
 
-        SinglyLinkedList<String> list = new SinglyLinkedList<>();
+        queue.offer(1);
+        queue.poll();
+        queue.offer(1);
 
-        list.addFirst("1");
-        list.addFirst("2");
-        list.addLast("3");
-        System.out.println();
-        list.removeFirst();
-        System.out.println();
     }
 }
