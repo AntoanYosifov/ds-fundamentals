@@ -1,12 +1,11 @@
-import implementations.Queue;
+import implementations.DoublyLinkedList;
 
 public class Main {
     public static void main(String[] args) {
-        Queue<Integer> queue = new Queue<>();
+        DoublyLinkedList<Integer> numbers = new DoublyLinkedList<>();
 
-        queue.offer(1);
-        queue.poll();
-        queue.offer(1);
-
+        numbers.addLast(1);
+        numbers.addLast(2);
+        numbers.addLast(3);
     }
 }
