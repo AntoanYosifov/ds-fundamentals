@@ -3,6 +3,7 @@ package implementations;
 import interfaces.Deque;
 
 import java.util.Iterator;
+import java.util.function.Consumer;
 
 public class ArrayDeque<E> implements Deque<E> {
 
@@ -128,7 +129,7 @@ public class ArrayDeque<E> implements Deque<E> {
         }
 
         this.size--;
-        if(isEmpty()) {
+        if (isEmpty()) {
             resetPointers();
         }
         return element;
@@ -165,7 +166,7 @@ public class ArrayDeque<E> implements Deque<E> {
             this.tail--;
             this.size--;
             if (isEmpty()) {
-               resetPointers();
+                resetPointers();
             }
             return element;
         }
@@ -192,9 +193,23 @@ public class ArrayDeque<E> implements Deque<E> {
         return this.size == 0;
     }
 
+
     @Override
     public Iterator<E> iterator() {
-        return null;
+        return new Iterator<>() {
+            private int index = head;
+            private int returned = 0;
+            @Override
+            public boolean hasNext() {
+                return returned < size;
+            }
+
+            @Override
+            public E next() {
+                returned++;
+                return getAt(index++);
+            }
+        };
     }
 
     private Object[] grow() {
