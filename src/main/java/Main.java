@@ -2,10 +2,10 @@ import implementations.DoublyLinkedList;
 
 public class Main {
     public static void main(String[] args) {
-        DoublyLinkedList<Integer> numbers = new DoublyLinkedList<>();
+        double[] ints = new double[5];
+        ints[0] = 7;
 
-        numbers.addLast(1);
-        numbers.addLast(2);
-        numbers.addLast(3);
+        System.out.println(ints.length);
+        System.out.println(ints[0]);
     }
 }
