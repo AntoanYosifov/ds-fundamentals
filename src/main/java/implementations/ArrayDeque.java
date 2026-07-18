@@ -3,11 +3,10 @@ package implementations;
 import interfaces.Deque;
 
 import java.util.Iterator;
-import java.util.function.Consumer;
 
 public class ArrayDeque<E> implements Deque<E> {
 
-    private final int INITIAL_CAPACITY = 3;
+    private final int INITIAL_CAPACITY = 7;
 
     private int size;
 
@@ -67,7 +66,20 @@ public class ArrayDeque<E> implements Deque<E> {
 
     @Override
     public void insert(int index, E element) {
+        int initialIndex = this.head + index;
+        ensureValidIndex(initialIndex);
 
+        int leftElements = initialIndex - this.head;
+        int rightElements = this.tail - initialIndex;
+
+        if (leftElements > rightElements) {
+            this.openGapFromTail(initialIndex);
+        } else {
+            this.openGapFromHead(initialIndex);
+        }
+
+        int updatedIndex = this.head + index;
+        this.elements[updatedIndex] = element;
     }
 
     @Override
@@ -90,7 +102,7 @@ public class ArrayDeque<E> implements Deque<E> {
 
     @Override
     public E pop() {
-        return null;
+        return removeFirst();
     }
 
     @Override
@@ -122,9 +134,9 @@ public class ArrayDeque<E> implements Deque<E> {
             int rightElements = this.tail - realIndex;
 
             if (leftElements > rightElements) {
-                shiftLeft(realIndex);
+                closeGapFromTail(realIndex);
             } else {
-                shiftRight(realIndex);
+                closeGapFromHead(realIndex);
             }
         }
 
@@ -243,7 +255,7 @@ public class ArrayDeque<E> implements Deque<E> {
         }
     }
 
-    private void shiftRight(int realIndex) {
+    private void closeGapFromHead(int realIndex) {
         for (int i = realIndex; i > head; i--) {
             this.elements[i] = this.elements[i - 1];
         }
@@ -251,12 +263,28 @@ public class ArrayDeque<E> implements Deque<E> {
         this.head++;
     }
 
-    private void shiftLeft(int realIndex) {
+    private void closeGapFromTail(int realIndex) {
         for (int i = realIndex; i < tail; i++) {
             this.elements[i] = this.elements[i + 1];
         }
         this.elements[tail] = null;
         this.tail--;
+    }
+
+    private void openGapFromHead(int realIndex) {
+        E firstElement = this.getAt(this.head);
+        for (int i = this.head; i < realIndex; i++) {
+            this.elements[i] = this.elements[i + 1];
+        }
+        this.addFirst(firstElement);
+    }
+
+    private void openGapFromTail(int realIndex) {
+        E lastElement = this.getAt(this.tail);
+        for (int i = this.tail; i > realIndex; i--) {
+            this.elements[i] = this.elements[i - 1];
+        }
+        this.addLast(lastElement);
     }
 
     private void resetPointers() {
