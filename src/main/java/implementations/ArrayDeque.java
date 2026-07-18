@@ -107,11 +107,21 @@ public class ArrayDeque<E> implements Deque<E> {
 
     @Override
     public E get(int index) {
-        return null;
+        int realIndex = this.head + index;
+        ensureValidIndex(realIndex);
+        return this.getAt(realIndex);
     }
 
     @Override
     public E get(Object object) {
+        if (isEmpty()) {
+            return null;
+        }
+        for (int i = this.head; i <= this.tail; i++) {
+            if (this.elements[i].equals(object)) {
+                return this.getAt(i);
+            }
+        }
         return null;
     }
 
@@ -211,6 +221,7 @@ public class ArrayDeque<E> implements Deque<E> {
         return new Iterator<>() {
             private int index = head;
             private int returned = 0;
+
             @Override
             public boolean hasNext() {
                 return returned < size;

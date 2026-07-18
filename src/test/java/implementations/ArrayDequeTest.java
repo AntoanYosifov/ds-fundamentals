@@ -14,7 +14,8 @@ public class ArrayDequeTest {
         deque.push(15);
         deque.push(16);
         System.out.println();
-        deque.insert(2, 69);
+        String i = "";
+        Integer result = deque.get(i);
         System.out.println(deque.capacity());
 
     }
