@@ -84,7 +84,10 @@ public class ArrayDeque<E> implements Deque<E> {
 
     @Override
     public void set(int index, E element) {
+        int realIndex = this.head + index;
+        ensureValidIndex(realIndex);
 
+        this.elements[realIndex] = element;
     }
 
     @Override
