@@ -66,7 +66,7 @@ public class ArrayDeque<E> implements Deque<E> {
 
     @Override
     public void insert(int index, E element) {
-        int initialIndex = this.head + index;
+        int initialIndex = getRealIndex(index);
         ensureValidIndex(initialIndex);
 
         int leftElements = initialIndex - this.head;
@@ -78,13 +78,13 @@ public class ArrayDeque<E> implements Deque<E> {
             this.openGapFromHead(initialIndex);
         }
 
-        int updatedIndex = this.head + index;
+        int updatedIndex = getRealIndex(index);
         this.elements[updatedIndex] = element;
     }
 
     @Override
     public void set(int index, E element) {
-        int realIndex = this.head + index;
+        int realIndex = getRealIndex(index);
         ensureValidIndex(realIndex);
 
         this.elements[realIndex] = element;
@@ -110,7 +110,7 @@ public class ArrayDeque<E> implements Deque<E> {
 
     @Override
     public E get(int index) {
-        int realIndex = this.head + index;
+        int realIndex = getRealIndex(index);
         ensureValidIndex(realIndex);
         return this.getAt(realIndex);
     }
@@ -130,35 +130,12 @@ public class ArrayDeque<E> implements Deque<E> {
 
     @Override
     public E remove(int index) {
-        int realIndex = this.head + index;
+        int realIndex = getRealIndex(index);
         ensureValidIndex(realIndex);
-
-        E element = this.getAt(realIndex);
-        this.elements[realIndex] = null;
-
-        if (realIndex == this.head || realIndex == this.tail) {
-            if (realIndex == this.head) {
-                this.head++;
-            } else {
-                this.tail--;
-            }
-        } else {
-            int leftElements = realIndex - this.head;
-            int rightElements = this.tail - realIndex;
-
-            if (leftElements > rightElements) {
-                closeGapFromTail(realIndex);
-            } else {
-                closeGapFromHead(realIndex);
-            }
-        }
-
-        this.size--;
-        if (isEmpty()) {
-            resetPointers();
-        }
-        return element;
+        return removeAt(realIndex);
     }
+
+
 
     @Override
     public E remove(Object object) {
@@ -166,14 +143,16 @@ public class ArrayDeque<E> implements Deque<E> {
             return null;
         }
 
-        int objectIndex = this.indexOf(object);
+        int realIndex = this.indexOf(object);
 
-        if (objectIndex != -1) {
-            return this.remove(objectIndex);
+        if (realIndex == -1) {
+            return null;
         }
 
-        return null;
+        return removeAt(realIndex);
     }
+
+
 
     @Override
     public E removeFirst() {
@@ -219,7 +198,12 @@ public class ArrayDeque<E> implements Deque<E> {
 
     @Override
     public void trimToSize() {
-
+        Object[] newArray = new Object[this.size];
+        int index = 0;
+        for (int i = this.head; i <= this.tail; i++) {
+            newArray[index++] = this.elements[i];
+        }
+        this.elements = newArray;
     }
 
     @Override
@@ -271,8 +255,36 @@ public class ArrayDeque<E> implements Deque<E> {
         return (E) this.elements[index];
     }
 
+    private E removeAt(int realIndex) {
+        E element = this.getAt(realIndex);
+        this.elements[realIndex] = null;
+
+        if (realIndex == this.head || realIndex == this.tail) {
+            if (realIndex == this.head) {
+                this.head++;
+            } else {
+                this.tail--;
+            }
+        } else {
+            int leftElements = realIndex - this.head;
+            int rightElements = this.tail - realIndex;
+
+            if (leftElements > rightElements) {
+                closeGapFromTail(realIndex);
+            } else {
+                closeGapFromHead(realIndex);
+            }
+        }
+
+        this.size--;
+        if (isEmpty()) {
+            resetPointers();
+        }
+        return element;
+    }
+
     private void ensureValidIndex(int realIndex) {
-        if (realIndex < this.head || realIndex > this.tail) {
+        if (realIndex < this.head || realIndex > this.tail || isEmpty()) {
             throw new IndexOutOfBoundsException("Index out of bounds for index: " + (realIndex - this.head));
         }
     }
@@ -321,5 +333,9 @@ public class ArrayDeque<E> implements Deque<E> {
             }
         }
         return -1;
+    }
+
+    private int getRealIndex(int index) {
+        return this.head + index;
     }
 }
