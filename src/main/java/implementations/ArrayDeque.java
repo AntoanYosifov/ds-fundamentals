@@ -160,9 +160,18 @@ public class ArrayDeque<E> implements Deque<E> {
         return element;
     }
 
-
     @Override
     public E remove(Object object) {
+        if (isEmpty()) {
+            return null;
+        }
+
+        int objectIndex = this.indexOf(object);
+
+        if (objectIndex != -1) {
+            return this.remove(objectIndex);
+        }
+
         return null;
     }
 
@@ -217,7 +226,6 @@ public class ArrayDeque<E> implements Deque<E> {
     public boolean isEmpty() {
         return this.size == 0;
     }
-
 
     @Override
     public Iterator<E> iterator() {
@@ -306,4 +314,12 @@ public class ArrayDeque<E> implements Deque<E> {
         this.head = this.tail = middle;
     }
 
+    private int indexOf(Object object) {
+        for (int i = this.head; i <= this.tail; i++) {
+            if (this.elements[i].equals(object)) {
+                return i;
+            }
+        }
+        return -1;
+    }
 }
