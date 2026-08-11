@@ -50,14 +50,19 @@ public class Tree<E> implements AbstractTree<E> {
         return result;
     }
 
-
-
     @Override
     public void addChild(E parentKey, Tree<E> child) {
+        Tree<E> search = this.find(this, parentKey);
 
+        if (search == null) {
+            throw new IllegalArgumentException();
+        }
+
+        search.children.add(child);
+        child.parent = search;
     }
-	
-	@Override
+
+    @Override
     public void removeNode(E nodeKey) {
 
     }
@@ -72,6 +77,19 @@ public class Tree<E> implements AbstractTree<E> {
             this.doDfs(child, result);
         }
         result.add(node.value);
+    }
+
+    private Tree<E> find(Tree<E> current, E parentKey) {
+        if (current.value.equals(parentKey)) {
+            return current;
+        }
+        for (Tree<E> child : current.children) {
+            Tree<E> found = this.find(child, parentKey);
+            if (found != null) {
+                return found;
+            }
+        }
+        return null;
     }
 }
 
