@@ -52,7 +52,7 @@ public class Tree<E> implements AbstractTree<E> {
 
     @Override
     public void addChild(E parentKey, Tree<E> child) {
-        Tree<E> search = this.find(this, parentKey);
+        Tree<E> search = this.findRecursive(this, parentKey);
 
         if (search == null) {
             throw new IllegalArgumentException();
@@ -79,16 +79,40 @@ public class Tree<E> implements AbstractTree<E> {
         result.add(node.value);
     }
 
-    private Tree<E> find(Tree<E> current, E parentKey) {
+    private Tree<E> findRecursive(Tree<E> current, E parentKey) {
         if (current.value.equals(parentKey)) {
             return current;
         }
         for (Tree<E> child : current.children) {
-            Tree<E> found = this.find(child, parentKey);
+            Tree<E> found = this.findRecursive(child, parentKey);
             if (found != null) {
                 return found;
             }
         }
+        return null;
+    }
+
+    private Tree<E> findBfs(E nodeKey) {
+        Deque<Tree<E>> childrenQueue = new ArrayDeque<>();
+
+        childrenQueue.offer(this);
+
+        while (!childrenQueue.isEmpty()) {
+            Tree<E> current = childrenQueue.poll();
+
+            if (current.value.equals(nodeKey)) {
+                return current;
+            }
+
+            for (Tree<E> child : current.children) {
+                if (child.value.equals(nodeKey)) {
+                    return child;
+                } else {
+                    childrenQueue.offer(child);
+                }
+            }
+        }
+
         return null;
     }
 }
