@@ -94,7 +94,32 @@ public class Tree<E> implements AbstractTree<E> {
 
     @Override
     public void swap(E firstKey, E secondKey) {
+        Tree<E> firstNode = findBfs(firstKey);
+        Tree<E> secondNode = findBfs(secondKey);
 
+        if (firstNode == null || secondNode == null) {
+            throw new IllegalArgumentException();
+        }
+
+        Tree<E> firstParent = firstNode.parent;
+        Tree<E> secondParent = secondNode.parent;
+
+        if (firstParent == null) {
+            swapRoot(secondNode);
+            return;
+        } else if (secondParent == null) {
+            swapRoot(firstNode);
+            return;
+        }
+
+        firstNode.parent = secondParent;
+        secondNode.parent = firstParent;
+
+        int firstIndex = firstParent.children.indexOf(firstNode);
+        int secondIndex = secondParent.children.indexOf(secondNode);
+
+        firstParent.children.set(firstIndex, secondNode);
+        secondParent.children.set(secondIndex, firstNode);
     }
 
     private void doDfs(Tree<E> node, List<E> result) {
@@ -139,6 +164,13 @@ public class Tree<E> implements AbstractTree<E> {
         }
 
         return null;
+    }
+
+    private void swapRoot(Tree<E> node) {
+        this.value = node.value;
+        this.children = node.children;
+        this.parent = null;
+        node.parent = null;
     }
 }
 
