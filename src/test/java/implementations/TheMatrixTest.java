@@ -22,17 +22,19 @@ public class TheMatrixTest {
 
         TheMatrix theMatrix = new TheMatrix(matrix, fillChar, startRow, startCol);
 
-        System.out.println(theMatrix.toOutputString());
-
         theMatrix.solve();
 
         String str = theMatrix.toOutputString();
-        assertEquals(
+
+        String expectedStr =
                 "xxx\r\n" +
-                        "xxx\r\n" +
-                        "xbx\r\n" +
-                        "xbx\r\n" +
-                        "xbx", str);
+                "xxx\r\n" +
+                "xbx\r\n" +
+                "xbx\r\n" +
+                "xbx";
+
+        assertEquals(
+                expectedStr, str);
     }
 
     @Test

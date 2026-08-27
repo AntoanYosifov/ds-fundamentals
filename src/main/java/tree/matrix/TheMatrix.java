@@ -1,6 +1,8 @@
 package tree.matrix;
 
 public class TheMatrix {
+    private static final String NEW_LINE = "\r\n";
+
     private char[][] matrix;
     private char fillChar;
     private char toBeReplaced;
@@ -16,7 +18,24 @@ public class TheMatrix {
     }
 
     public void solve() {
-        
+        fillMatrix(startRow, startCol);
+    }
+
+    private void fillMatrix(int row, int col) {
+        if (isOutOfBounds(row, col) || this.matrix[row][col] != this.toBeReplaced) {
+            return;
+        }
+
+        this.matrix[row][col] = this.fillChar;
+
+        this.fillMatrix(row + 1, col);
+        this.fillMatrix(row, col + 1);
+        this.fillMatrix(row - 1, col);
+        this.fillMatrix(row, col - 1);
+    }
+
+    private boolean isOutOfBounds(int row, int col) {
+        return row < 0 || row >= this.matrix.length || col < 0 || col >= this.matrix[row].length;
     }
 
     public String toOutputString() {
@@ -25,8 +44,13 @@ public class TheMatrix {
             for (int c = 0; c < this.matrix[r].length; c++) {
                 builder.append(this.matrix[r][c]);
             }
-            builder.append(System.lineSeparator());
+            builder.append(NEW_LINE);
         }
-        return builder.toString().trim();
+
+        if (builder.length() > 0) {
+            builder.setLength(builder.length() - NEW_LINE.length());
+        }
+
+        return builder.toString();
     }
 }

@@ -1,27 +1,38 @@
-import implementations.DoublyLinkedList;
-import implementations.Queue;
-import implementations.Stack;
-import implementations.Tree;
-
-import java.util.ArrayList;
-import java.util.List;
+import tree.matrix.TheMatrix;
 
 public class Main {
     public static void main(String[] args) {
-        Tree<Integer> integerTree = new Tree<>(7,
-                new Tree<>(19,
-                        new Tree<>(1),
-                        new Tree<>(12),
-                        new Tree<>(31)),
-                new Tree<>(21),
-                new Tree<>(14,
-                        new Tree<>(23),
-                        new Tree<>(6))
-        );
 
-        Tree<Integer> treeToAdd = new Tree<>(-1, new Tree<>(-2), new Tree<>(-3));
+        char[][] matrix = {
+                {'a', 'a', 'a'},
+                {'a', 'a', 'a'},
+                {'a', 'b', 'a'},
+                {'a', 'b', 'a'},
+                {'a', 'b', 'a'}
+        };
+        char fillChar = 'x';
+        int startRow = 0;
+        int startCol = 0;
 
-        integerTree.addChild(1, treeToAdd);
+        TheMatrix theMatrix = new TheMatrix(matrix, fillChar, startRow, startCol);
+
+        theMatrix.solve();
+
+        System.out.println("Solved: ");
+
+        System.out.println(theMatrix.toOutputString());
+
+        String expectedStr =
+                "xxx\r\n" +
+                        "xxx\r\n" +
+                        "xbx\r\n" +
+                        "xbx\r\n" +
+                        "xbx";
+
+        System.out.println("Expected: ");
+        System.out.println(expectedStr);
+
+        System.out.println(theMatrix.toOutputString().equals(expectedStr));
 
     }
 }
