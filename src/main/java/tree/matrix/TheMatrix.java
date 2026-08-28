@@ -1,5 +1,7 @@
 package tree.matrix;
 
+import java.util.ArrayDeque;
+
 public class TheMatrix {
     private static final String NEW_LINE = "\r\n";
 
@@ -18,20 +20,57 @@ public class TheMatrix {
     }
 
     public void solve() {
-        fillMatrix(startRow, startCol);
+//        fillMatrixRecursive(startRow, startCol);
+        fillMatrixUsingQueue(startRow, startCol);
     }
 
-    private void fillMatrix(int row, int col) {
+    private void fillMatrixUsingQueue(int initialRow, int initialCol) {
+        ArrayDeque<int[]> coordinates = new ArrayDeque<>();
+
+        coordinates.offer(new int[]{initialRow, initialCol});
+
+        while (!coordinates.isEmpty()) {
+            int[] position = coordinates.poll();
+
+            int row = position[0];
+            int col = position[1];
+
+            this.matrix[row][col] = this.fillChar;
+
+            if (isInBounds(row + 1, col) && this.matrix[row + 1][col] == this.toBeReplaced) {
+                coordinates.offer(new int[]{row + 1, col});
+            }
+
+            if (isInBounds(row - 1, col) && this.matrix[row - 1][col] == this.toBeReplaced) {
+                coordinates.offer(new int[]{row - 1, col});
+            }
+
+            if (isInBounds(row, col + 1) && this.matrix[row][col + 1] == this.toBeReplaced) {
+                coordinates.offer(new int[]{row, col + 1});
+            }
+
+            if (isInBounds(row, col - 1) && this.matrix[row][col - 1] == this.toBeReplaced) {
+                coordinates.offer(new int[]{row, col - 1});
+            }
+
+        }
+    }
+
+    private void fillMatrixRecursive(int row, int col) {
         if (isOutOfBounds(row, col) || this.matrix[row][col] != this.toBeReplaced) {
             return;
         }
 
         this.matrix[row][col] = this.fillChar;
 
-        this.fillMatrix(row + 1, col);
-        this.fillMatrix(row, col + 1);
-        this.fillMatrix(row - 1, col);
-        this.fillMatrix(row, col - 1);
+        this.fillMatrixRecursive(row + 1, col);
+        this.fillMatrixRecursive(row, col + 1);
+        this.fillMatrixRecursive(row - 1, col);
+        this.fillMatrixRecursive(row, col - 1);
+    }
+
+    private boolean isInBounds(int row, int col) {
+        return !isOutOfBounds(row, col);
     }
 
     private boolean isOutOfBounds(int row, int col) {
