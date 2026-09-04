@@ -2,17 +2,33 @@ package tree.implementations;
 
 import tree.interfaces.AbstractTreeAdvanced;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class TreeAdvanced<E> implements AbstractTreeAdvanced<E> {
+
+    private E key;
+    private TreeAdvanced<E> parent;
+    private List<TreeAdvanced<E>> children;
+
+    public TreeAdvanced(E key, TreeAdvanced<E>... children) {
+        this.key = key;
+        this.children = new ArrayList<>();
+        this.children.addAll(Arrays.asList(children));
+        for (TreeAdvanced<E> child : children) {
+            child.setParent(this);
+        }
+    }
+
     @Override
     public void setParent(TreeAdvanced<E> parent) {
-
+        this.parent = parent;
     }
 
     @Override
     public void addChild(TreeAdvanced<E> child) {
-
+        this.children.add(child);
     }
 
     @Override
