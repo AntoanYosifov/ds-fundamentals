@@ -33,12 +33,12 @@ public class TreeAdvanced<E> implements AbstractTreeAdvanced<E> {
 
     @Override
     public TreeAdvanced<E> getParent() {
-        return null;
+        return this.parent;
     }
 
     @Override
     public E getKey() {
-        return null;
+        return this.key;
     }
 
     @Override
