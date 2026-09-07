@@ -3,7 +3,6 @@ package tree.implementations;
 import tree.interfaces.AbstractTreeAdvanced;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class TreeAdvanced<E> implements AbstractTreeAdvanced<E> {
@@ -12,13 +11,13 @@ public class TreeAdvanced<E> implements AbstractTreeAdvanced<E> {
     private TreeAdvanced<E> parent;
     private List<TreeAdvanced<E>> children;
 
-    public TreeAdvanced(E key, TreeAdvanced<E>... children) {
+    public TreeAdvanced(E key) {
         this.key = key;
         this.children = new ArrayList<>();
-        this.children.addAll(Arrays.asList(children));
-        for (TreeAdvanced<E> child : children) {
-            child.setParent(this);
-        }
+//        this.children.addAll(Arrays.asList(children));
+//        for (TreeAdvanced<E> child : children) {
+//            child.setParent(this);
+//        }
     }
 
     @Override
